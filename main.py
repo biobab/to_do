@@ -1,5 +1,5 @@
 # from typing import Optional #workswith ex.: age: int|None
-from sqlmodel import Field, SQLModel, create_engine
+from sqlmodel import Field, SQLModel, create_engine, Session
 from datetime import datetime, UTC
 import dotenv
 import os
@@ -22,11 +22,15 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 
+def create_item(name):
+    item = Items(name=name)
+    session = Session(engine)
+    with session:
+        session.add(item)
+        session.commit()
+    # session.close() -> a with session miatt nem kell
+
+
 if __name__ == "__main__":
     create_db_and_tables()
-
-# def create_item():
-#     item_1 = Items(id=1, name="...")
-
-
-# create_item()
+    create_item(" ,@/'' ")
